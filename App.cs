@@ -23,6 +23,12 @@ namespace BlackJack
 
         public Random Card => card;
 
+        public void Run()
+        {
+            Intro.IntroToGame();
+            DealCards();
+        }
+
         public bool DealCards()
         {
             Console.Clear();
@@ -197,7 +203,7 @@ namespace BlackJack
                 return false;
             }
 
-            Console.WriteLine("Would you like to play again?");
+            Console.WriteLine("\nWould you like to play again?");
 
             var input = Console.ReadLine();
             switch(input)

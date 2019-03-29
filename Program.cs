@@ -10,9 +10,7 @@ namespace BlackJack
     {
         static void Main(string[] args)
         {
-            App deal = new App();
-
-            deal.DealCards();
+            new App().Run();
         }
 
         
