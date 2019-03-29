@@ -8,15 +8,20 @@ namespace BlackJack
 {
     class App
     {
-        int cardOne;
-        int cardTotal;
-        int dealerTotal;
-        string suit;
+        int cardOne, cardTotal, dealerTotal, bet;
+        string suit, holdHit;
         int playerMoney = 100000;
-        int bet;
-        string holdHit;
-        Random card = new Random();
+        readonly Random card = new Random();
 
+        public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
+        public int CardOne { get => cardOne; set => cardOne = value; }
+        public int CardTotal { get => cardTotal; set => cardTotal = value; }
+        public string Suit { get => suit; set => suit = value; }
+        public int Bet1 { get => bet; set => bet = value; }
+        public string HoldHit1 { get => holdHit; set => holdHit = value; }
+        public int DealerTotal { get => dealerTotal; set => dealerTotal = value; }
+
+        public Random Card => card;
 
         public bool DealCards()
         {
@@ -24,7 +29,7 @@ namespace BlackJack
 
             Bet();
 
-            playerMoney -= bet;
+            PlayerMoney -= Bet1;
 
             int x = 1;
             while (x < 6)
@@ -32,9 +37,9 @@ namespace BlackJack
                 bool test = true;
                 while (test)
                 {
-                    InitialDeal(card);
+                    InitialDeal(Card);
 
-                    if (cardTotal > 21)
+                    if (CardTotal > 21)
                     {
                         Console.WriteLine("You busted!\n");
                         x = 7;
@@ -51,13 +56,13 @@ namespace BlackJack
 
         private void InitialDeal(Random card)
         {
-            cardOne = CreateCards(card);
+            CardOne = CreateCards(card);
 
             Console.WriteLine("Dealing Cards:\n");
 
-            Console.Write($"You received a {cardOne} of {suit}\n");
-            cardTotal += cardOne;
-            Console.WriteLine($"Your total: {cardTotal}");
+            Console.Write($"You received a {CardOne} of {Suit}\n");
+            CardTotal += CardOne;
+            Console.WriteLine($"Your total: {CardTotal}");
         }
 
         private int CreateCards(Random card)
@@ -78,16 +83,16 @@ namespace BlackJack
             switch (cardSuit)
             {
                 case 1:
-                    suit = "Clubs";
+                    Suit = "Clubs";
                     break;
                 case 2:
-                    suit = "Spades";
+                    Suit = "Spades";
                     break;
                 case 3:
-                    suit = "Hearts";
+                    Suit = "Hearts";
                     break;
                 case 4:
-                    suit = "Diamonds";
+                    Suit = "Diamonds";
                     break;
             }
         }
@@ -98,9 +103,9 @@ namespace BlackJack
             while (hold)
             {
                 Console.WriteLine("\nHold or Hit?");
-                holdHit = Console.ReadLine();
+                HoldHit1 = Console.ReadLine();
 
-                switch (holdHit)
+                switch (HoldHit1)
                 {
                     case "hold":
                         DealerHand();
@@ -114,7 +119,7 @@ namespace BlackJack
                         break;
                     default:
                         Console.Clear();
-                        Console.WriteLine($"You have: {cardTotal}");
+                        Console.WriteLine($"You have: {CardTotal}");
                         hold = true;
                         break;
                 }
@@ -164,14 +169,14 @@ namespace BlackJack
         {
             Console.Clear();
 
-            Console.WriteLine($"Your money: {playerMoney}\n");
+            Console.WriteLine($"Your money: {PlayerMoney}\n");
 
             try
             {
                 Console.WriteLine("Place your bet!");
-                bet = Convert.ToInt32(Console.ReadLine());
+                Bet1 = Convert.ToInt32(Console.ReadLine());
                 
-                if (bet>playerMoney)
+                if (Bet1>PlayerMoney)
                 {
                     Bet();
                 }
@@ -186,7 +191,7 @@ namespace BlackJack
         public bool Play()
         {
 
-            if (playerMoney == 0)
+            if (PlayerMoney == 0)
             {
                 Console.WriteLine("Unfortunately you have no more money! Goodbye!");
                 return false;
@@ -201,7 +206,7 @@ namespace BlackJack
                     Console.WriteLine("Sorry to see you go");
                     break;
                 case "yes":
-                    cardTotal = 0;
+                    CardTotal = 0;
                     return DealCards();
                 default:
                     Console.Clear();
@@ -214,30 +219,30 @@ namespace BlackJack
         public void DealerHand()
         {
             Random dealerHand = new Random();
-            dealerTotal = dealerHand.Next(15, 26);
+            DealerTotal = dealerHand.Next(15, 26);
 
-            if (dealerTotal>21)
+            if (DealerTotal>21)
             {
-                Console.WriteLine($"\nDealer got {dealerTotal} and busted!\nYou won {bet}!");
-                playerMoney += 2 * bet;
+                Console.WriteLine($"\nDealer got {DealerTotal} and busted!\nYou won {Bet1}!");
+                PlayerMoney += 2 * Bet1;
             }
 
-            if (dealerTotal<=21&&dealerTotal>cardTotal)
+            if (DealerTotal<=21&&DealerTotal>CardTotal)
             {
-                Console.WriteLine($"\nDealer got {dealerTotal} and beat your {cardTotal}\nYou Lose!");
+                Console.WriteLine($"\nDealer got {DealerTotal} and beat your {CardTotal}\nYou Lose!");
             }
 
-            if (dealerTotal <= 21 && dealerTotal < cardTotal)
+            if (DealerTotal <= 21 && DealerTotal < CardTotal)
             {
-                Console.WriteLine($"\nYou got {cardTotal} and beat the dealer's {dealerTotal}\nYou Win {bet}!");
-                playerMoney += 2 * bet;
+                Console.WriteLine($"\nYou got {CardTotal} and beat the dealer's {DealerTotal}\nYou Win {Bet1}!");
+                PlayerMoney += 2 * Bet1;
             }
 
-            if (dealerTotal==cardTotal)
+            if (DealerTotal==CardTotal)
             {
-                Console.WriteLine($"You got {cardTotal} and the dealer got {dealerTotal}!\n" +
-                                  $"Fortunately for you, you win {bet}!");
-                playerMoney += 2 * bet;
+                Console.WriteLine($"You got {CardTotal} and the dealer got {DealerTotal}!\n" +
+                                  $"Fortunately for you, you win {Bet1}!");
+                PlayerMoney += 2 * Bet1;
             }
         }
     }
